@@ -79,7 +79,7 @@ display:
   foreach (val, index) in res {
     do newCard = Card(
       title=val.title,
-      subtitle=val.year,
+      subtitle=val.synopsis,
       image_url=val.img,
       buttons=[Button("En savoir plus", payload=val.title)]
     )
