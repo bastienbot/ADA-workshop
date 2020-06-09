@@ -1,0 +1,31 @@
+{
+  "id": "7f6303a6-114a-494b-84da-c10952722541",
+  "name": "ADA",
+  "description": null,
+  "default_flow": "Default",
+  "flows": [
+    {
+      "name": "Default",
+      "description": "Default custom flow",
+      "commands": []
+    },
+    {
+      "name": "Intro",
+      "commands": []
+    }
+  ],
+  "files": [],
+  "functions": [],
+  "apps": [
+    {
+      "name": "netflix/catalog",
+      "description": "Search movies in the Netflix catalog",
+      "args": [],
+      "runtime": "nodejs12.x",
+      "handler": "index.handler",
+      "environment": {},
+      "app_id": "f6bf6f5f-309e-47bd-895b-0469bcb3cadc",
+      "version": "1.0.0"
+    }
+  ]
+}
