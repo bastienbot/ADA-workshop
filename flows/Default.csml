@@ -26,7 +26,7 @@ what_type:
 // ############################################################
 what_genre:
   // 1 - Écris la question que va poser le chatbot à l'utilisateur
-  say Question("",
+  say Question("Quel est le genre de {{type}} que tu aimes ?",
 	buttons=[
     Button("action"),
     Button("anime"),
@@ -41,15 +41,19 @@ what_genre:
     Button("thriller")
 		])
     // 2 - Indique au chatbot d'attendre la réponse de l'utilisateur ici
-
+    hold
     // 3 - Indique au chatbot qu'il doit se souvenir de la réponse de l'utilisateur
     // en la mettant dans une variable qu'on appelera  "genre"
-
+    remember genre = event
     goto what_year
   
 what_year:
   // 4 - Demande à l'utilisateur si il souhaite une année en particulier
-  // cette question a un seul bouton "Non", que tu mettra dans la variable btnnon
+  // cette question a un seul bouton "Non", que tu mettras dans la variable btnnon
+  say Question("Est-ce que tu souhaites une année en particulier, si oui précise ?",
+	buttons=[
+		Button("Non 🙅‍♀️") as btnnon
+		])
   hold
   if (event match btnnon) {
     remember year = "any"
@@ -57,21 +61,31 @@ what_year:
     remember year = event
   }
   // 5 - Indique au chatbot qu'il doit se rendre à l'étape is_sorted
+  goto is_sorted
 
 
 is_sorted:
   // 6 - Demande à l'utilisateur si il souhaite que les résultats soient trier par date
   // Ajoute deux boutons : oui et non
-
+  say Question("Est-ce que tu souhaites que les résultats soient trier par dates ?",
+	buttons=[
+		Button("Oui 🤩") as btnoui,
+		Button("Non 🙅‍♀️") as btnnon
+		])
   // 7 - Indique au chatbot d'attendre la réponse de l'utilisateur ici
-
+  hold
   // 8 - Si l'utilisateur clique sur oui, crée une variable "sort" et mets le mot "true" à l'interieur
-
+  if (event match btnoui) {
+    remember sort = true
+  } else {
+    remember sort = false
+  }
   // 9 - Indique au chatbot qu'il doit se rendre à l'étape display
+  goto display
 
 display:
   // 10 - Remplacez ci-dessous les mots avec les variables
-  do res = Fn("netflix/catalog", genre="thriller", type="movie", sort=true, year="any")
+  do res = Fn("netflix/catalog", genre=genre, type=type, sort=sort, year=year)
   do cards = []
   if (res.length() == 0) {
     say "Je n'ai pas trouvé de film, désolé 😔"
@@ -96,3 +110,4 @@ moreInfos:
   say Url("https://www.netflix.com/search?q={{event}}", text="{{event}} sur Netflix")
   say Button("Chercher d'autres films")
   goto moreInfos
+
